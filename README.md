@@ -1,0 +1,1 @@
+A repository containing my solutions to Advent of Code 2024
