@@ -1,0 +1,13 @@
+name: day-3
+version: 0.1.0
+
+authors:
+  - Steven Polglase <swpolgla@pm.me>
+
+targets:
+  day-3:
+    main: src/day-3.cr
+
+crystal: '>= 1.14.0'
+
+license: MIT
