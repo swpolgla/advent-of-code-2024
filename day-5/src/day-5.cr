@@ -7,24 +7,24 @@ file_contents = File.read("input/input.txt")
 lines = file_contents.split('\n').select { |x| x.size > 0 }
 
 rules = [] of String
-updates = [] of Array(String)
+updates = [] of Array(Int8)
 
 lines.each do |line|
     if line.includes?('|')
         rules << line
     else
-        updates << line.split(',')
+        updates << line.split(',').map { |x| x.to_i8}
     end
 end
 
 # Map any given page to a list of pages it must come before
-rule_map = {} of String => Array(String)
+rule_map = {} of Int8 => Array(Int8)
 rules.each do |rule|
-    before = rule.split('|')[0]
-    after = rule.split('|')[1]
+    before = rule.split('|')[0].to_i8
+    after = rule.split('|')[1].to_i8
 
     if !rule_map.keys.includes?(before)
-        rule_map[before] = Array(String).new
+        rule_map[before] = Array(Int8).new
     end
     rule_map[before] << after
     rule_map[before].sort!
@@ -43,9 +43,9 @@ updates.each do |update|
         end
     }
     if update == sorted
-        correct_updates += update[update.size // 2].to_i
+        correct_updates += update[update.size // 2]
     else
-        corrected_mid_sum += sorted[sorted.size // 2].to_i
+        corrected_mid_sum += sorted[sorted.size // 2]
     end
 end
 
