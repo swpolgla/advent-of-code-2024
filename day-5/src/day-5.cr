@@ -6,37 +6,36 @@ file_contents = File.read("input/input.txt")
 
 lines = file_contents.split('\n').select { |x| x.size > 0 }
 
-rules = [] of String
+rules = [] of Array(Int8)
 updates = [] of Array(Int8)
 
 lines.each do |line|
-    if line.includes?('|')
-        rules << line
+    if line[2] == '|'
+        rules << line.split('|').map { |x| x.to_i8 }
     else
         updates << line.split(',').map { |x| x.to_i8}
     end
 end
 
 # Map any given page to a list of pages it must come before
-rule_map = {} of Int8 => Array(Int8)
+rule_map = {} of Int8 => Set(Int8)
 rules.each do |rule|
-    before = rule.split('|')[0].to_i8
-    after = rule.split('|')[1].to_i8
+    before = rule[0]
+    after = rule[1]
 
-    if !rule_map.keys.includes?(before)
-        rule_map[before] = Array(Int8).new
+    if !rule_map.has_key?(before)
+        rule_map[before] = Set(Int8).new
     end
     rule_map[before] << after
-    rule_map[before].sort!
 end
 
 correct_updates = 0
 corrected_mid_sum = 0
 updates.each do |update|
     sorted = update.sort { |a, b|
-        if rule_map.keys.includes?(a) && rule_map[a].includes?(b)
+        if rule_map.has_key?(a) && rule_map[a].includes?(b)
             -1
-        elsif rule_map.keys.includes?(b) && rule_map[b].includes?(a)
+        elsif rule_map.has_key?(b) && rule_map[b].includes?(a)
             1
         else
             0
